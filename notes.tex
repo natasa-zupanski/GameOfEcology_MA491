@@ -1,0 +1,139 @@
+    \documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{esint}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{fontspec}
+\usepackage{enumitem, multicol}
+\setmainfont{Comic Sans MS}
+\hypersetup{
+    colorlinks=true,
+    urlcolor=blue,
+}
+\graphicspath{{images/}}
+\usepackage[
+backend=biber,
+style=alphabetic,
+sorting=ynt
+]{biblatex}
+\addbibresource{sources.bib}
+
+\setlength\parindent{0pt} % to avoid using \noindent for every paragraph
+
+\begin{document}
+
+\section{Things we should probably model for the project.}
+\begin{itemize}
+\item Size and Calculate maximum size based on dietary 
+conditions
+\begin{itemize}
+    \item We could probably just model weight instead of like dragon body size wrt weight, however it would still be interesting to model the size of the dragon, as we have a source that mentions modeling dragon shape/size I think? 
+    \item The problem statement requires that the dragons be around 10 kg at birth and around 30-40 kg at 1 year old. We could model a growth equation off of this that should probably consider the amount of energy intake required for growth or something like that. 
+    \item If we model this assuming a constant supply of the necessary food using a square root curve (because hyperbolas are more complicated), a curve of $w=25sqrt(t)+10$ gives a square root curve that follows the given conditions for weight at 0 years and 1 year given that a dragon is 35 kg at 1 year.
+\end{itemize} 
+\item Vegetation Destruction
+\item Energy consumed by flight and fire and existence
+\begin{itemize}
+    \item Based on birds or Komodo dragons
+    \item Bird flight source models power required during flight per kg body mass by the following equation: $P_{im}=50.7M^{0.72}_b$
+    \item Or Cost of Transport (COT) in terms of $\frac{J}{g*km}$ for flying is given as: $COT=16M_b^{-0.30}$
+\end{itemize}
+\item Energy taken in by eating prey animals - maybe consider random sized prey or an average size
+\item Model reproduction of prey
+\item Model living locations based on temperature/climate and how that affects energy required to survive
+\begin{itemize}
+    \item Potentially consider migrational movement if living in an area where conditions change through the year. 
+\end{itemize} 
+\item Model area required to support dragons and people required to assist dragon if assistance is required for survival
+\item Model flight capabilities like how far they can fly in a day
+\item Model aggressiveness? - Maybe assume that the dragons don't attack humans so that humans don't fight back and potentially kill them. 
+\end{itemize}
+
+
+\section{Assumptions}
+\begin{itemize}
+\item Assume the dragons can't get sick/injured?
+\item Assume dragons do not attack humans?
+\item Assume dragons are cold-blooded animals
+\item Assume dragons have no natural predators in the world
+\item Assume dragons enjoy living around volcanoes more than in other areas
+\item Assume only 10 percent of the available energy in a prey animal is passed onto dragons when eating according to the 10 percent rule.
+\item $H(t)\propto W(t)$
+\item $\frac{1}{L(t)}\int_0^{L(t)}C(l)dl\propto W(t)\cdot H(t)$
+\end{itemize}
+
+\section{Potential Places for Dragons to Live}
+\begin{itemize}
+\item Andes
+\item Southern Asia
+\item Central America
+\end{itemize}
+
+\section{Equations}
+Mass: $M(t)\approx \rho\int_0^{L(t)}C(l)dl$
+Form of $L(t)$: $\frac{A}{1+ae^{-bt}}$
+Width: $W(t)$
+
+
+\end{document}
+
+
+% links --
+
+% https://www.scientificamerican.com/article/could-dragons-from-game-of-thrones-actually-fly-aeronautical-engineering-and-math-says-they-could/
+% - talks about physics
+% - suggests more dense atmosphere and about 30% air
+
+% https://gameofthrones.fandom.com/wiki/Dragon#Daenerys_Targaryen's_dragons
+% - one is more aggressive.
+%   - Dragon, Rhaelgal, Viserion
+% - what do they eat?
+%   - "Dragons are obligate carnivores and apex predators in the wild, with diets consisting entirely of meat. Dragons need to roast their prey with their fire-breath before consuming it - the only animals apart from humans who prefer cooked meat. Dragons can eat almost any kind of meat, and engage in opportunistic and defensive cannibalism."
+% - weather
+%   - "The two dragons don’t really like the cold temperatures of the North..."
+
+% https://www.hull.ac.uk/work-with-us/more/media-centre/news/2024/if-dragons-were-real-how-might-fire-breathing-work
+% - how breath fire?
+
+% https://www.youtube.com/watch?v=NYY5ksNCjCY - how breath fire
+% - documentary, has the hydrogen production organ
+
+% paper - https://www.clausiuspress.com/assets/default/article/2021/10/23/article_1635044104.pdf
+% - game of thrones specific, physiological and ecological
+
+% https://www.researchgate.net/publication/233467718_Ecological_aspects_of_dragons
+% - history of dragons on earth as if real
+
+% https://www.reddit.com/r/asoiaf/comments/bzlmet/spoilers_extended_dragon_growth_rate/
+% - reddit post about growth rate
+
+% https://eartharchives.org/articles/quetzalcoatlus-the-largest-flying-animal-of-all-time/index.html
+
+% https://asoiaf.westeros.org/index.php?/topic/150679-dragon-eating-habits/
+% https://asoiaf.westeros.org/index.php?/topic/138740-the-logistics-of-dragons/
+% https://asoiaf.westeros.org/index.php?/topic/145230-dragons-and-volcanoes/
+
+% https://www.clausiuspress.com/assets/default/article/2021/10/23/article_1635044104.pdf
+
+
+%
+https://education.nationalgeographic.org/resource/energy-flow-and-10-percent-rule/
+
+% https://rosehulman-my.sharepoint.com/:b:/g/personal/randolmc_rose-hulman_edu/EaYrgvKhGl9JsyssZqxxPFgBsmSl5KjM6qc_1WKWZydbFw?e=U0uYEj
+% https://rosehulman-my.sharepoint.com/:b:/g/personal/randolmc_rose-hulman_edu/Eeo1UuxAY8ZHt_F89-EuwL8B3Q5FkuJlQ2M8S9qS5jOJ_A?e=ZIYta6
+
+% https://earthquakes.volcanodiscovery.com/
+
+
+%https://education.nationalgeographic.org/resource/ecology/ 
+%good definition for ecology
+
+%https://royalsocietypublishing.org/doi/10.1098/rstb.2015.0384#:~:text=Migrating%20birds%20use%20fatty%20acids%20as%20their%20source,across%20the%20cell%20membrane%20and%20within%20the%20cytoplasm. 
+
+% http://www.jstor.org/stable/4511355
+% Energy Metabolism and Theoretical Flight Range of Birds
+% kcal/hr based on body weight and energy for migrating
+
+
