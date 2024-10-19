@@ -32,8 +32,15 @@ conditions
     \item We could probably just model weight instead of like dragon body size wrt weight, however it would still be interesting to model the size of the dragon, as we have a source that mentions modeling dragon shape/size I think? 
     \item The problem statement requires that the dragons be around 10 kg at birth and around 30-40 kg at 1 year old. We could model a growth equation off of this that should probably consider the amount of energy intake required for growth or something like that. 
     \item If we model this assuming a constant supply of the necessary food using a square root curve (because hyperbolas are more complicated), a curve of $w=25sqrt(t)+10$ gives a square root curve that follows the given conditions for weight at 0 years and 1 year given that a dragon is 35 kg at 1 year.
+    \item Metabolic rate of Komodo dragons is approximately equal to $80\pm24 \frac{kJ}{kg}$
+    \item Metabolic rate of birds is approximately equal to $log(BMR)=0.598(0.040)+0.546(0.030)*log(w)$ where BRM is the basal metabolic rate and is in units of $\frac{kJ}{day}$
+    \item Possible flammable chemicals that could be used for the dragon fire are cyclohexane, diethyl ether, diethylene glycol, ethanol, ethyl acetate, ethylene glycol, glycerin, heptane, hexane, methanol, butanol, pentane, toluene, acetic acid, acetone, and benzene which can all be made out of carbon, hydrogen, and oxygen coming from food sources and or airflow. 
+    \item The minimum ignition energy of benzene is 0.1 mJ. After the ignition energy has been reached, the benzene fire will ignite itself with oxygen in its presence which I am assuming is in excess due to the existence of an atmosphere. Then the dragon will also breath out particles of hydrogen peroxide causing the fire to blow out kind of like what the flame breather people do with powdered sugar and stuff.  This liberates about $3.17*10^{6} \frac{kJ}{mol*hr}$ of energy. 
 \end{itemize} 
 \item Vegetation Destruction
+\begin{itemize}
+    \item Wildfires - https://perusupportgroup.org.uk/2024/09/forest-fires-in-the-andes-and-amazon-generate-death-and-destruction/
+\end{itemize}
 \item Energy consumed by flight and fire and existence
 \begin{itemize}
     \item Based on birds or Komodo dragons
@@ -41,16 +48,37 @@ conditions
     \item Or Cost of Transport (COT) in terms of $\frac{J}{g*km}$ for flying is given as: $COT=16M_b^{-0.30}$
 \end{itemize}
 \item Energy taken in by eating prey animals - maybe consider random sized prey or an average size
+\begin{itemize}
+    \item Assume that dragons only eat alpacas.
+    \item 24 month old llama has around 40 kg of meat on average (https://www.exoticmeatmarkets.com/Llama-Meat-Sampler-10-Lbs-p/samplerllama10lbs.htm)
+    \item Llama meat has 622 calories per 100 g so 248800 calories per llama (https://www.keziefoods.co.uk/product/butchers-shop/steaks/2-llama-haunch-steaks-250g/)
+    \item Need around 1 acre per llama (https://lostcreekllamas.com/basiccare\_space.htm)
+    \item Assuming a dragon needs 4,000,000 calories per day (game of simulation paper), each dragon would need to eat 16 llamas, which need 16 acres. (TODO: DE for llama population)
+    \item Assume that it takes 1 person for every 1300 acres (size of Rose's campus Rose-Hulman wikipedia)
+    \item Can raise llamas for 81 days in 1300 acres
+    \item 11700 acres for llamas for 24 months
+    \item Assuming llamas are slaughtered when they are 24 months old (seems typical from a few websites), ??? acres would be needed
+    \item Breed llamas after they are 24 months old, takes one year for one llama to be born (http://www.shagbarkridge.com/breed.html)
+    \item Dragons eat 5840 llamas per year, so have 5840 llamas that are 12-24 months old, 5840 llamas that are 0-12 months old, and 5480 llamas that are pregnant
+    \item Need 17520 acres for continuously raising llamas (around 80\% area of Terre Haute)
+    \item 13.5 (round to 14) people to raise the llamas
+\end{itemize}
 \item Model reproduction of prey
+\begin{itemize}
+    \item See bullet points in the previous section
+\end{itemize}
 \item Model living locations based on temperature/climate and how that affects energy required to survive
 \begin{itemize}
     \item Potentially consider migrational movement if living in an area where conditions change through the year. 
 \end{itemize} 
 \item Model area required to support dragons and people required to assist dragon if assistance is required for survival
+\begin{itemize}
+    \item See energy taken by eating prey animals section
+\end{itemize}
 \item Model flight capabilities like how far they can fly in a day
 \item Model aggressiveness? - Maybe assume that the dragons don't attack humans so that humans don't fight back and potentially kill them. 
 \end{itemize}
- 
+
 
 \section{Assumptions}
 \begin{itemize}
@@ -62,6 +90,7 @@ conditions
 \item Assume only 10 percent of the available energy in a prey animal is passed onto dragons when eating according to the 10 percent rule.
 \item $H(t)\propto W(t)$
 \item $\frac{1}{L(t)}\int_0^{L(t)}C(l)dl\propto W(t)\cdot H(t)$
+\item Pure benzene
 \end{itemize}
 
 \section{Potential Places for Dragons to Live}
@@ -72,9 +101,11 @@ conditions
 \end{itemize}
 
 \section{Equations}
-Mass: $M(t)\approx \rho\int_0^{L(t)}C(l)dl$
-Form of $L(t)$: $\frac{A}{1+ae^{-bt}}$
-Width: $W(t)$
+Mass: $M(t)\approx \rho\int_0^{L(t)}C(l)dl$\\
+Form of $L(t)$: $\frac{A}{1+ae^{-bt}}$\\
+Width: $W(t)=\frac{1}{L(t)}\int_0^{L(t)}W(l)dl$\\
+Volume: $V(t)\approx V_T(t)=V_T^M\left(\frac{L_H(t)}{L_H^M}\right)^3$\\
+
 
 
 \end{document}
@@ -118,7 +149,8 @@ Width: $W(t)$
 % https://www.clausiuspress.com/assets/default/article/2021/10/23/article_1635044104.pdf
 
 
-%https://education.nationalgeographic.org/resource/energy-flow-and-10-percent-rule/
+%
+https://education.nationalgeographic.org/resource/energy-flow-and-10-percent-rule/
 
 % https://rosehulman-my.sharepoint.com/:b:/g/personal/randolmc_rose-hulman_edu/EaYrgvKhGl9JsyssZqxxPFgBsmSl5KjM6qc_1WKWZydbFw?e=U0uYEj
 % https://rosehulman-my.sharepoint.com/:b:/g/personal/randolmc_rose-hulman_edu/Eeo1UuxAY8ZHt_F89-EuwL8B3Q5FkuJlQ2M8S9qS5jOJ_A?e=ZIYta6
@@ -139,14 +171,10 @@ Width: $W(t)$
 %Metabolism requirements per gram of Komodo dragons - if we decide that dragons are cold blooded this could work, but I also saw sources saying that the metabolism of Komodo dragons is unusually fast for cold
 %blooded animals and almost equivalent to that of a warm blooded animal so it could work in either manner I think. 
 
-% https://www.actascientific.com/ASNH/pdf/ASNH-06-1154.pdf
-% https://www.redalyc.org/journal/3031/303149707011/html/
-% reviews of multiple 
+%https://pmc.ncbi.nlm.nih.gov/articles/PMC5809028/#sec7
+%This source has values for the metabolic rate of birds. 
 
-% https://www.researchgate.net/profile/Ermias-Kebreab/publication/40095444_Simulation_exercises_for_animal_science_MSc_students_Rumen_digestion_and_pig_growth/links/0deec5217864b19a8a000000/Simulation-exercises-for-animal-science-MSc-students-Rumen-digestion-and-pig-growth.pdf
-% book
-
-% https://www.when2meet.com/?27108364-Ioa86
-% meeting
+%https://iopscience.iop.org/article/10.1088/1742-6596/301/1/012039/pdf#:~:text=The%20minimum%20ignition%20energy%20(MIE)%20of%20a%20hydrogen%E2%80%93air,using%20the%20capacitive%20spark%20discharge.&text=Figure%201.,Safety%20cap%20on%20chamber.
+%This source tells us that the minimum ignition temeperature of benzene 0.1 mJ. 
 
 
