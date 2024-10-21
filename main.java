@@ -72,7 +72,7 @@ class Main {
     protected class Dragon {
         double weight = 10; // in kg
         int birth = 0; // in days
-        double weight_at_start_hibernate = 10;
+        double weight_at_start_hibernate = -1;
         int last_birth = 0;
 
         public Dragon(int birth) {
@@ -168,11 +168,14 @@ class Main {
             if (current_location.hibernate_day > constants.max_hibernate_day) {
                 current_location.hibernate = false;
 
+                ArrayList<Dragon> toRemove = new ArrayList<>();
                 for (Dragon dragon : dragons) {
                     if (dragon.isDeadAfterHibernate()) {
-                        dragons.remove(dragon);
+                        toRemove.add(dragon);
                     }
                 }
+
+                dragons.removeAll(toRemove);
 
                 runDayFor(dragons, current_location);
                 return;
@@ -186,8 +189,17 @@ class Main {
             if (current_llamas <= constants.hibernate_multiplier * llamas_to_eat) {
                 current_location.hibernate = true;
                 current_location.hibernate_day = 0;
+                for (Dragon dragon : dragons) {
+                    if (dragon.weight_at_start_hibernate == -1) {
+                        dragon.weight_at_start_hibernate = dragon.weight;
+                    }
+                }
                 runDayFor(dragons, current_location);
                 return;
+            } else {
+                for (Dragon dragon : dragons) {
+                    dragon.weight_at_start_hibernate = -1;
+                }
             }
 
         }
@@ -220,7 +232,7 @@ class Main {
                     Dragon dragon = dragons.get(i);
 
                     if (dragon.getAge() >= 7 * 365) {
-                        System.out.println(i);
+                        // System.out.println(i);
                         toRemove.add(dragon);
                         ArrayList<Dragon> new_dragons = new ArrayList<>();
                         new_dragons.add(dragon);
