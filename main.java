@@ -60,6 +60,9 @@ class Main {
         protected double max_weight_loss_hibernate = 0.2;
         protected int max_hibernate_day = 365 * 1;
         protected int min_for_birth = 365 * 2;
+        protected double max_llamas_per_acre = 0.0271834219;
+        protected double dragon_territory_area = 69867400.6; // in acres
+        protected int max_llama_population = (int) Math.floor(69867400.6 * 0.0271834219);
     }
 
     protected class Dragon {
@@ -192,6 +195,8 @@ class Main {
         int new_llama_population = (int) Math
                 .floor(current_llamas - llamas_to_eat + constants.llama_growth_rate *
                         current_llamas);
+
+        new_llama_population = Math.min(new_llama_population, constants.max_llama_population);
         current_location.llamas = new_llama_population;
 
         // adjust dragon weights
