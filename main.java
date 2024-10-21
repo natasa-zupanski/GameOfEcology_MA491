@@ -9,16 +9,37 @@ class Main {
     private int days = 0;
     private Constants constants = new Constants();
 
+    public class Stats {
+
+    }
+
     public static void main(String[] args) {
         // TODO: add command line
         Main main = new Main();
-        main.run(10);
+        main.run(365);
     }
 
     public void run(int days_to_run) {
         init();
         for (int i = 0; i < days_to_run; i++) {
             runDay();
+        }
+        printReport();
+    }
+
+    public void printReport() {
+        int i = 0;
+        for (ArrayList<Dragon> dragons : dragonsAtLocations.keySet()) {
+            System.out.println("---- ----  " + i + "  ---- ----");
+            Location loc = dragonsAtLocations.get(dragons);
+            System.out.println("Llama population: " + loc.llamas);
+            System.out.println("Hibernating: " + loc.hibernate);
+            for (Dragon dragon : dragons) {
+                System.out.println("---- ----");
+                System.out.println(dragon.toString());
+                System.out.println("---- ----");
+            }
+            System.out.println("---- ----  -  ---- ----");
         }
     }
 
@@ -81,9 +102,9 @@ class Main {
         for (ArrayList<Dragon> dragons : dragonsAtLocations.keySet()) {
             Location current_location = dragonsAtLocations.get(dragons);
             runDayFor(dragons, current_location);
-            days++;
-            System.out.println("End day: " + (days - 1));
+            System.out.println("End day: " + days);
             System.out.println(dragons.get(0));
+            days++;
         }
     }
 
@@ -141,6 +162,21 @@ class Main {
                 // adjust llamas to eat
                 llamas_to_eat += getLlamasForEnergy(constants.birth_energy);
             }
+
+            int start_index = getFirstDragonOfAge(dragons);
+            if (start_index != -1) {
+                dragonsAtLocations.remove(dragons);
+                for (int i = start_index + 1; i < dragons.size(); i++) {
+                    // ensure one adult dragon left behind
+                    Dragon dragon = dragons.get(i);
+                    if (dragon.getAge() >= 7 * 365) {
+                        dragons.remove(dragon);
+                        ArrayList<Dragon> new_dragons = new ArrayList<>();
+                        new_dragons.add(dragon);
+                        dragonsAtLocations.put(new_dragons, new Location());
+                    }
+                }
+            }
         }
 
         // adjust llama population
@@ -161,6 +197,16 @@ class Main {
 
         // save changes
         dragonsAtLocations.put(dragons, current_location);
+    }
+
+    public int getFirstDragonOfAge(ArrayList<Dragon> dragons) {
+        for (int i = 0; i < dragons.size(); i++) {
+            Dragon dragon = dragons.get(i);
+            if (dragon.getAge() >= 7 * 365) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public boolean existsAdultDragon(ArrayList<Dragon> dragons) {
