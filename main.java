@@ -12,7 +12,7 @@ class Main {
     public static void main(String[] args) {
         // TODO: add command line
         Main main = new Main();
-        main.run(1);
+        main.run(10);
     }
 
     public void run(int days_to_run) {
