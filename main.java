@@ -16,7 +16,7 @@ class Main {
     public static void main(String[] args) {
         // TODO: add command line
         Main main = new Main();
-        main.run(365);
+        main.run(365 * 3);
     }
 
     public void run(int days_to_run) {
@@ -102,8 +102,8 @@ class Main {
         for (ArrayList<Dragon> dragons : dragonsAtLocations.keySet()) {
             Location current_location = dragonsAtLocations.get(dragons);
             runDayFor(dragons, current_location);
-            System.out.println("End day: " + days);
-            System.out.println(dragons.get(0));
+            // System.out.println("End day: " + days);
+            // System.out.println(dragons.get(0));
             days++;
         }
     }
@@ -238,7 +238,7 @@ class Main {
     }
 
     public double getProportionEnergyToGrowth(Dragon dragon) {
-        return ((46.4 / (1 + Math.exp(-1 / (200 * (dragon.getAge() - 365))))) + 56.4) / 100;
+        return ((46.4 / (1 + Math.exp((-1 / 200) * (dragon.getAge() - 365)))) + 56.4) / 100;
     }
 
     public double getEnergyForDay(Dragon dragon, boolean hibernate) {
