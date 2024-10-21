@@ -6,6 +6,7 @@ class Main {
 
     // start empty
     private Map<ArrayList<Dragon>, Location> dragonsAtLocations = new HashMap<>();
+    Map<ArrayList<Dragon>, Location> copy = new HashMap<>();
     private int days = 0;
     private Constants constants = new Constants();
 
@@ -16,7 +17,7 @@ class Main {
     public static void main(String[] args) {
         // TODO: add command line
         Main main = new Main();
-        main.run(365 * 3);
+        main.run(365 * 7 + 1);
     }
 
     public void run(int days_to_run) {
@@ -40,6 +41,7 @@ class Main {
                 System.out.println("---- ----");
             }
             System.out.println("---- ----  -  ---- ----");
+            i++;
         }
     }
 
@@ -49,6 +51,7 @@ class Main {
             init_dragons.add(new Dragon(days));
         }
         dragonsAtLocations.put(init_dragons, new Location());
+        copy = copy(dragonsAtLocations);
     }
 
     protected class Constants { // TODO: make sure these are right
@@ -98,22 +101,53 @@ class Main {
         public String toString() {
             return "weight: " + weight + ", age: " + getAge() + ".";
         }
+
+        public Dragon clone() {
+            Dragon newDragon = new Dragon(birth);
+            newDragon.last_birth = last_birth;
+            newDragon.weight = weight;
+            newDragon.weight_at_start_hibernate = weight_at_start_hibernate;
+            return newDragon;
+        }
     }
 
     protected class Location {
         int llamas = constants.initialLlamas;
         boolean hibernate = false;
         int hibernate_day = 0;
+
+        public Location clone() {
+            Location newLocation = new Location();
+            newLocation.llamas = llamas;
+            newLocation.hibernate = hibernate;
+            newLocation.hibernate_day = hibernate_day;
+            return newLocation;
+        }
     }
 
     public void runDay() {
-        for (ArrayList<Dragon> dragons : dragonsAtLocations.keySet()) {
-            Location current_location = dragonsAtLocations.get(dragons);
+        copy = copy(dragonsAtLocations);
+        dragonsAtLocations.clear();
+        for (ArrayList<Dragon> dragons : copy.keySet()) {
+            Location current_location = copy.get(dragons);
             runDayFor(dragons, current_location);
             // System.out.println("End day: " + days);
             // System.out.println(dragons.get(0));
             days++;
         }
+    }
+
+    public Map<ArrayList<Dragon>, Location> copy(Map<ArrayList<Dragon>, Location> from) {
+        Map<ArrayList<Dragon>, Location> copy = new HashMap<>();
+        for (ArrayList<Dragon> dragons : dragonsAtLocations.keySet()) {
+            Location current_location = from.get(dragons);
+            ArrayList<Dragon> copy_dragons = new ArrayList<>();
+            for (Dragon dragon : dragons) {
+                copy_dragons.add((Dragon) dragon.clone());
+            }
+            copy.put(copy_dragons, (Location) current_location.clone());
+        }
+        return copy;
     }
 
     public void runDayFor(ArrayList<Dragon> dragons, Location current_location) {
@@ -155,16 +189,17 @@ class Main {
                 return;
             }
 
+        }
+
+        // adjust dragon weights
+        for (int i = 0; i < energies.size(); i++) {
+            adjustWeight(dragons.get(i), energies.get(i), hibernate);
+        }
+
+        if (!hibernate) { // consider births and those moving out
             if (current_llamas > constants.birth_multiplier * llamas_to_eat) {
                 Dragon birthing = existsBirthingDragon(dragons);
-                if (birthing != null) { // assume
-                                        // dragons
-                                        // hatch
-                                        // right
-                                        // away
-                    // for
-                    // convenience
-                    // do birth
+                if (birthing != null) {
                     birthing.last_birth = days;
                     dragonsAtLocations.remove(dragons);
                     dragons.add(new Dragon(days));
@@ -178,16 +213,21 @@ class Main {
             int start_index = getFirstDragonOfAge(dragons);
             if (start_index != -1) {
                 dragonsAtLocations.remove(dragons);
+                ArrayList<Dragon> toRemove = new ArrayList<>();
                 for (int i = start_index + 1; i < dragons.size(); i++) {
                     // ensure one adult dragon left behind
                     Dragon dragon = dragons.get(i);
+
                     if (dragon.getAge() >= 7 * 365) {
-                        dragons.remove(dragon);
+                        System.out.println(i);
+                        toRemove.add(dragon);
                         ArrayList<Dragon> new_dragons = new ArrayList<>();
                         new_dragons.add(dragon);
                         dragonsAtLocations.put(new_dragons, new Location());
                     }
                 }
+
+                dragons.removeAll(toRemove);
             }
         }
 
@@ -198,11 +238,6 @@ class Main {
 
         new_llama_population = Math.min(new_llama_population, constants.max_llama_population);
         current_location.llamas = new_llama_population;
-
-        // adjust dragon weights
-        for (int i = 0; i < energies.size(); i++) {
-            adjustWeight(dragons.get(i), energies.get(i), hibernate);
-        }
 
         // adjust location
         if (hibernate) {
