@@ -66,6 +66,7 @@ class Main {
         double weight = 10; // in kg
         int birth = 0; // in days
         double weight_at_start_hibernate = 10;
+        int last_birth = 0;
 
         public Dragon(int birth) {
             this.birth = birth;
@@ -85,6 +86,10 @@ class Main {
 
         public int getAge() {
             return days - birth;
+        }
+
+        public boolean canBirth() {
+            return (days - last_birth) > 365;
         }
 
         public String toString() {
@@ -147,20 +152,24 @@ class Main {
                 return;
             }
 
-            if (current_llamas > constants.birth_multiplier * llamas_to_eat && existsAdultDragon(dragons)) { // assume
-                                                                                                             // dragons
-                                                                                                             // hatch
-                                                                                                             // right
-                                                                                                             // away
-                // for
-                // convenience
-                // do birth
-                dragonsAtLocations.remove(dragons);
-                dragons.add(new Dragon(days));
+            if (current_llamas > constants.birth_multiplier * llamas_to_eat) {
+                Dragon birthing = existsBirthingDragon(dragons);
+                if (birthing != null) { // assume
+                                        // dragons
+                                        // hatch
+                                        // right
+                                        // away
+                    // for
+                    // convenience
+                    // do birth
+                    birthing.last_birth = days;
+                    dragonsAtLocations.remove(dragons);
+                    dragons.add(new Dragon(days));
 
-                // calculate llamas needed to spend energy to birth & bathe in fire
-                // adjust llamas to eat
-                llamas_to_eat += getLlamasForEnergy(constants.birth_energy);
+                    // calculate llamas needed to spend energy to birth & bathe in fire
+                    // adjust llamas to eat
+                    llamas_to_eat += getLlamasForEnergy(constants.birth_energy);
+                }
             }
 
             int start_index = getFirstDragonOfAge(dragons);
@@ -209,13 +218,13 @@ class Main {
         return -1;
     }
 
-    public boolean existsAdultDragon(ArrayList<Dragon> dragons) {
+    public Dragon existsBirthingDragon(ArrayList<Dragon> dragons) {
         for (Dragon dragon : dragons) {
-            if (dragon.getAge() >= constants.min_for_birth) {
-                return true;
+            if (dragon.getAge() >= constants.min_for_birth && dragon.canBirth()) {
+                return dragon;
             }
         }
-        return false;
+        return null;
     }
 
     public void adjustWeight(Dragon dragon, double energy, boolean hibernate) {
