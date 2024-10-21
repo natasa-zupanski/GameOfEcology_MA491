@@ -17,7 +17,7 @@ class Main {
     public static void main(String[] args) {
         // TODO: add command line
         Main main = new Main();
-        main.run(365 * 7 + 1);
+        main.run(365 * 7 + 20);
     }
 
     public void run(int days_to_run) {
@@ -35,6 +35,7 @@ class Main {
             Location loc = dragonsAtLocations.get(dragons);
             System.out.println("Llama population: " + loc.llamas);
             System.out.println("Hibernating: " + loc.hibernate);
+            System.out.println("Dragons: " + dragons.size());
             for (Dragon dragon : dragons) {
                 System.out.println("---- ----");
                 System.out.println(dragon.toString());
@@ -62,10 +63,10 @@ class Main {
         protected double birth_energy = 0; // including fire and reproduction
         protected double max_weight_loss_hibernate = 0.2;
         protected int max_hibernate_day = 365 * 1;
-        protected int min_for_birth = 365 * 2;
+        protected int min_for_birth = 365 * 5;
         protected double max_llamas_per_acre = 0.0271834219;
         protected double dragon_territory_area = 69867400.6; // in acres
-        protected int max_llama_population = (int) Math.floor(69867400.6 * 0.0271834219);
+        protected int max_llama_population = (int) Math.floor(0.5 * 69867400.6 * 0.0271834219);
     }
 
     protected class Dragon {
