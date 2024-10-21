@@ -30,14 +30,15 @@ class Main {
         dragonsAtLocations.put(init_dragons, new Location());
     }
 
-    protected class Constants { // TODO: make sure we can do this
-        protected int initialLlamas = 466667;
+    protected class Constants { // TODO: make sure these are right
+        protected int initialLlamas = 583333;
         protected double birth_multiplier = 5;
         protected double hibernate_multiplier = 1;
         protected double llama_growth_rate = 0.28;
         protected double birth_energy = 0; // including fire and reproduction
         protected double max_weight_loss_hibernate = 0.2;
         protected int max_hibernate_day = 365 * 1;
+        protected int min_for_birth = 365 * 2;
     }
 
     protected class Dragon {
@@ -64,6 +65,10 @@ class Main {
         public int getAge() {
             return days - birth;
         }
+
+        public String toString() {
+            return "weight: " + weight + ", age: " + getAge() + ".";
+        }
     }
 
     protected class Location {
@@ -77,6 +82,8 @@ class Main {
             Location current_location = dragonsAtLocations.get(dragons);
             runDayFor(dragons, current_location);
             days++;
+            System.out.println("End day: " + (days - 1));
+            System.out.println(dragons.get(0));
         }
     }
 
@@ -84,8 +91,8 @@ class Main {
         boolean hibernate = current_location.hibernate;
         final boolean hibernate_for_energy = hibernate;
 
-        ArrayList<Double> energies = (ArrayList<Double>) dragons.stream()
-                .map(dragon -> getEnergyForDay(dragon, hibernate_for_energy)).toList();
+        ArrayList<Double> energies = new ArrayList<>(dragons.stream()
+                .map(dragon -> getEnergyForDay(dragon, hibernate_for_energy)).toList());
 
         double sum_energy = energies.stream().reduce(0.0,
                 (Double subtotal, Double element) -> {
@@ -119,8 +126,12 @@ class Main {
                 return;
             }
 
-            if (current_llamas > constants.birth_multiplier * llamas_to_eat) { // assume dragons hatch right away
-                                                                               // for
+            if (current_llamas > constants.birth_multiplier * llamas_to_eat && existsAdultDragon(dragons)) { // assume
+                                                                                                             // dragons
+                                                                                                             // hatch
+                                                                                                             // right
+                                                                                                             // away
+                // for
                 // convenience
                 // do birth
                 dragonsAtLocations.remove(dragons);
@@ -150,6 +161,15 @@ class Main {
 
         // save changes
         dragonsAtLocations.put(dragons, current_location);
+    }
+
+    public boolean existsAdultDragon(ArrayList<Dragon> dragons) {
+        for (Dragon dragon : dragons) {
+            if (dragon.getAge() >= constants.min_for_birth) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void adjustWeight(Dragon dragon, double energy, boolean hibernate) {
