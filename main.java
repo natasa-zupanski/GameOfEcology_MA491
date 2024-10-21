@@ -10,25 +10,34 @@ class Main {
     private Constants constants = new Constants();
 
     public static void main(String[] args) {
-
+        // TODO: add command line
+        Main main = new Main();
+        main.run(1);
     }
 
     public void run(int days_to_run) {
-
+        init();
+        for (int i = 0; i < days_to_run; i++) {
+            runDay();
+        }
     }
 
-    protected class Constants {
+    public void init() {
+        ArrayList<Dragon> init_dragons = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            init_dragons.add(new Dragon(days));
+        }
+        dragonsAtLocations.put(init_dragons, new Location());
+    }
+
+    protected class Constants { // TODO: make sure we can do this
         protected int initialLlamas = 466667;
-        protected double birth_multiplier = 0;
+        protected double birth_multiplier = 5;
         protected double hibernate_multiplier = 1;
         protected double llama_growth_rate = 0.28;
-        protected double birth_energy = 0; // ncluding fire and reproduction
+        protected double birth_energy = 0; // including fire and reproduction
         protected double max_weight_loss_hibernate = 0.2;
         protected int max_hibernate_day = 365 * 1;
-    }
-
-    protected class Inputs {
-
     }
 
     protected class Dragon {
@@ -58,7 +67,7 @@ class Main {
     }
 
     protected class Location {
-        int llamas = 0;
+        int llamas = constants.initialLlamas;
         boolean hibernate = false;
         int hibernate_day = 0;
     }
@@ -145,10 +154,10 @@ class Main {
 
     public void adjustWeight(Dragon dragon, double energy, boolean hibernate) {
         if (hibernate) {
+            dragon.weight = getNewWeight(dragon, -1 * energy);
+        } else {
             double prop_for_growth = getProportionEnergyToGrowth(dragon);
             dragon.weight = getNewWeight(dragon, prop_for_growth * energy);
-        } else {
-
         }
 
     }
@@ -158,7 +167,8 @@ class Main {
     }
 
     public double getNewWeight(Dragon dragon, double energy) {
-        return 0;
+        double change_weight = 0.0000548 * energy;
+        return dragon.weight + change_weight;
     }
 
     public double getProportionEnergyToGrowth(Dragon dragon) {
